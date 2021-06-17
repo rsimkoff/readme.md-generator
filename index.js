@@ -1,108 +1,70 @@
-// TODO: Include packages needed for this application
-const inquirer = require('inquirer');
-const fs =require('fs');
-const os = require('os');
-const util = require('util');
+// declaring variables importing inquirer for questioning and declaring a path to the markdown script file.
+const fs = require("fs");
+const path = require("path");
+const inquirer = require("inquirer");
+const generateMarkdown = require("./generateMarkdown");
 
-
-// TODO: Create an array of questions for user input
-const questions = [];
-inquirer.questions(
-    [
-        {
-        type: 'input',
-        message: 'What is the name of your project?',
-        name: 'ProjectTitle',
-        },
-
-        {
-            type: 'input',
-            message: 'what is your project about?',
-            name: 'projectDescription',
-        },
-
-        {
-            type: 'input',
-            message: 'what is the installation process of your project?',
-            name: 'installation',
-        },
-
-        {
-            type: 'input',
-            message: 'what is your project used for?',
-            name: 'usage',
-           
-        },
-
-        {
-            type: 'input',
-            message: 'chose a license for this project',
-            name: 'license',
-            choices: [
-            "Firefox",
-            "Google Chrome",
-            "apache",
-            "ISC",
-            "MIT",
-            "OPEN"
-            ]
-           
-        },
-
-        {
-            type: 'input',
-            message: 'who are the other contributors?',
-            name: 'contributions',
-            
-        },
-    
-    
-        {
-            type: 'input',
-            message: 'has any testing been done?',
-            name: 'testing',
-           
-        },
-
-        {
-            type: 'input',
-            message: 'please enter your GitHub username.',
-            name: 'username',
-           
-        },
-    
-    
-        {
-            type: 'input',
-            message: 'Please enter your email address.',
-            name: 'emailAddress',
-            
-        },
-    
-    
-    
-    
-    ]
-)
-// TODO: Create a function to write README file
-function writeToFile(fileName, data) {}
-
-// TODO: Create a function to initialize app
+// questions to be fed through the command line to the user via inquirer
+const questions = [
+  {
+    type: "input",
+    name: "github",
+    message: "What is your GitHub username?"
+  },{
+    type: "input",
+    name: "email",
+    message: "What is your email address?"
+  },
+  {
+    type: "input",
+    name: "title",
+    message: "What is your project's name?"
+  },
+  {
+    type: "input",
+    name: "description",
+    message: "Please write a short description of your project"
+  },
+  {
+    type: "list",
+    name: "license",
+    message: "What kind of license should your project have?",
+    choices: ["MIT", "APACHE 2.0", "GPL 3.0", "BSD 3", "None"]
+  },
+  {
+    type: "input",
+    name: "installation",
+    message: "What command should be run to install dependencies?",
+    default: "npm i"
+  },
+  {
+    type: "input",
+    name: "test",
+    message: "What command should be run to run tests?",
+    default: "npm test"
+  },
+  {
+    type: "input",
+    name: "usage",
+    message: "What does the user need to know about using the repo?",
+  },
+  {
+    type: "input",
+    name: "contributing",
+    message: "What does the user need to know about contributing to the repo?",
+  }
+];
+// writes function to designated via and sends data
+function writeToFile(fileName, data) {
+  return fs.writeFileSync(path.join(process.cwd(), fileName), data);
+}
+// initializes the function then sends prompt responses to questions and generates readme, with console logged response to user.
 function init() {
-    async function init() {
-        try {
-            // Ask user questions and generate responses
-            const answers = await questions();
-            const generateContent = generateReadme(answers);
-            // Write new README.md to dist directory
-            await writeToFile('./dist/README.md', generateContent);
-            console.log('✔️  Successfully wrote to README.md');
-        }   catch(err) {
-            console.log(err);
-        }
-      }
+  inquirer.prompt(questions)
+  .then((inquirerResponses) => {
+    console.log("Generating README...");
+    writeToFile("README.md", generateMarkdown({...inquirerResponses}));
+  })
 }
 
-
-// Function call to initialize app
 init();
