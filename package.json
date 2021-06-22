@@ -1,0 +1,26 @@
+{
+  "name": "readme.md-generator",
+  "version": "1.0.0",
+  "description": "installing inquirer",
+  "main": "index.js",
+  "dependencies": {
+    "inquirer": "^8.1.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rsimkoff/readme.md-generator.git"
+  },
+  "keywords": [
+    "node.js"
+  ],
+  "author": "Ryan Simkoff",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rsimkoff/readme.md-generator/issues"
+  },
+  "homepage": "https://github.com/rsimkoff/readme.md-generator#readme"
+}
